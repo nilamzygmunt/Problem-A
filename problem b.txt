@@ -1,0 +1,167 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+    short n;                                                     //variable to operate the loop
+    cin>>n;                                                     //we enter how many tests will be carried out
+    for(int i=0; i<=n; i++)                                     //loop to carry out n tests
+    {
+        int A;
+        int T1[5], T2[5];                                       //arrays to hold all the elements of the dates (index 0 - year, index 1 - months, index 2 - days,
+        for(int i=0; i<=5; i++)                                 //index 3 - hour, index 4 - minute, index 5 -second)
+        {
+            cin>>T1[i];                                         //fill in the array with date 1
+        }
+        for(int i=0; i<=5; i++)
+        {
+            cin>>T2[i];                                         //fill in the array with day 2
+        }
+        int years;                                              //variable for how many whole years between the two dates has passed
+        years=T2[0]-T1[0]-1;
+        int leap=0;                                             //variable for leap days
+
+        for(int i=T1[0]+1; i<T2[0]; i++)                        //loop to check what how many leap years have there been between the two dates (not counting the years in the dates, just the ones in-between)
+        {
+            if((i%4==0) && (i%100!=0) || i%400==0)              //condition when the year is a leap year
+                leap+=1;
+        }
+
+        int months=0;                                                       //variable for the days in the full months
+        int days=0;                                                         //variable for the rest of days
+        if(T1[0]==T2[0])                                                    //the case when the year on date 1 and date 2 are the same
+        {
+            years=0;                                                        //there are 0 years between the dates
+            for(int i=T1[1]; i<T2[1]; i++)                                  //the loop to count the days in the months, we start from the months from the date 1, the loop ends when we get to the months from the date 2
+            {
+                if(i==1 || i==3 || i==5 || i==7 || i==8 || i==10 || i==12)  // condition for the 31-days-long months
+                {
+
+                    months+=31;
+                    if(i==T1[1])                                            //in the case of the month that we start with,
+                    {                                                       //we count only the days left to the end of the month
+                        days=31-T1[2];                                      //that is why variable months is equal to 0
+                        months=0;
+                    }
+                }
+                else if(i==4 || i==6 || i==9 || i==11)                     //condition for the 30-days-long months
+                {
+                    months+=30;
+                    if(i==T1[1])
+                    {
+                        days=30-T1[2];
+                        months=0;
+                    }
+                }
+                else if(i==2)                                               //condition for February
+                {
+                    if((T1[0]%4==0) && (T1[0]%100!=0) || T1[0]%400==0)      //checking if the year in T1 is a leap year
+                        months+=29;
+                        if(i==T1[1])
+                        {
+                            days=29-T1[2];
+                            months=0;
+                        }
+                    else
+                    {
+                        months+=28;
+                        if(i==T1[1])
+                        {
+                            days=28-T1[2];
+                            months=0;
+                        }
+                    }
+                }
+            }
+                if(T1[1]==T2[1])                                                //if the months on the dates are the same, to count the days
+                {                                                               //we subtract days 1 from days 2 and then we subtract 1 as
+                    days=T2[2]-T1[2]-1;                                         //we can't count that day before we check the time (hh:mm:ss) first
+                    if(T2[2]==T1[2]+1)
+                        days=0;                                                 //if the result will be less than zero we change it to zero
+                }
+                else
+                        days=days+T2[2]-1;                                      //else we add the the days from days 1 and days 2 to each other and subtract 1
+         }
+         else if(T1[0]!=T2[0])                                                  //the case where the years from the date 1 and date 2 are not the same
+         {
+            for(int a=T1[1]; a<=12; a++)                                        //first we count the days from the months of date 1 till the end of the year
+            {
+                if(a==1 || a==3 || a==5 || a==7 || a==8 || a==10 || a==12)      // condition for the 31-days-long months
+                {
+
+                    months+=31;
+                    if(a==T1[1])
+                    {
+                        days=31-T1[2];
+                        months=0;
+                    }
+                }
+                 else if(a==4 || a==6 || a==9 || a==11)                     // condition for the 30-days-long months
+                {
+                    months+=30;
+                    if(a==T1[1])
+                    {
+                        days=30-T1[2];
+                        months=0;
+                    }
+                }
+                else if(a==2)                                               // condition for February
+                {
+                    if((T1[0]%4==0) && (T1[0]%100!=0) || T1[0]%400==0)
+                        months+=29;
+                        if(a==T1[1])
+                        {
+                            days=29-T1[2];
+                            months=0;
+                        }
+                    else
+                    {
+                        months+=28;
+                        if(a==T1[1])
+                        {
+                            days=28-T1[2];
+                            months=0;
+                        }
+                    }
+                }
+            }
+            for(int a =1; a<T2[1]; a++)                                     //now we count the days from the beginning of the year till the month of date 2
+            {
+                if(a==1 || a==3 || a==5 || a==7 || a==8 || a==10 || a==12)
+                {
+                    months+=31;
+                }
+                if(a==4 || a==6 || a==9 || a==11)
+                {
+                    months+=30;
+                }
+                if(a==2)
+                {
+                    if((T2[0]%4==0) && (T2[0]%100!=0) || T2[0]%400==0)
+                        months+=29;
+                    else
+                        months+=28;
+
+                }
+            }
+         days=days+T2[2]-1;                                                 //we add the the days from days 1 and days 2 to each other and subtract 1
+         }
+         if(T1[3]<T2[3])                                                    //now we check the time, if the hour from date 1 is smaller than the hour from the date 2
+             days+=1;                                                       //we add one day
+         else if(T1[3]==T2[3])                                              //else if the hours are equal
+         {
+             if(T1[4]<T2[4])                                                //if the minute from date 1 is smaller than the minute from date 2
+             days+=1;                                                       //we add one day
+             else if(T1[4]==T2[4])                                          //else if the minutes are equal
+             {
+                 if(T1[5]<T2[5] ||T1[5]==T2[5])                             //if the second from the date 1 is smaller than the second from date 2
+                 days+=1;                                                   //we add one day
+             }
+         }
+         days=days+months+years*365+leap;                                   //we sum our variables, multiplying years by 365
+         cout<<days<<endl;
+    }
+return 0;
+}
