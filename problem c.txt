@@ -1,0 +1,98 @@
+#include <iostream>
+#include <math.h>
+
+using namespace std;
+
+struct Point                                        //struct Point for coordinates x and y
+{
+    double x;
+    double y;
+};
+int main()
+{
+    short n;                                        //variable for the number of tests
+    cin>>n;                                         //we enter the number of tests
+    while(n)                                        //the loop to carry out n tests
+    {
+        int p;                                      //variable for the number of points
+        cin>>p;                                     //we enter the number of points
+        struct Point polygon[p];
+        for(int i=0; i<p; i++)                      //we fill in the array 'polygon' with the coordinates of the points
+        {
+            cin>>polygon[i].x>>polygon[i].y;
+        }                                           //sorting points clockwise
+                                                    //to be able to sort the points clockwise we need to how their position depends on the point (0,0)
+        double angle[p];                            //we look for the angles and store them in the array
+        for(int i=0; i<p; i++)
+        {
+            angle[i]=atan2(polygon[i].y,polygon[i].x);  //arctan2(y,x) is the angle between the positive x axis and the ray to the point (x, y)
+            if (angle[i]<=0)                            //the case when angle is less o requal to zero
+                angle[i]=2*M_PI+angle[i];               //we add 2 pi to the angle to have positive value
+        }
+        double distance[p];                             //we look for the distance beetween point (0,0) and the point (x,y)
+        for(int i=0; i<p; i++)
+        {
+            distance[i]=sqrt(polygon[i].x*polygon[i].x+polygon[i].y*polygon[i].y);
+        }
+        for(int i=0;i<p;i++)                             //Bubble Sorting algorithm to sort the points
+        {
+        for(int j=1;j<p-i;j++)
+            {
+                if(angle[j-1]<angle[j])                  //we compare the angles
+                {
+                    swap(angle[j-1], angle[j]);
+                    swap(polygon[j-1], polygon[j]);
+                    swap(distance[j-1], distance[j]);
+                }
+                else if(angle[j-1]==angle[j] && distance[j-1]<distance[j]) //if the angles are equal we compare the distance
+                {
+                    swap(angle[j-1], angle[j]);
+                    swap(polygon[j-1], polygon[j]);
+                    swap(distance[j-1], distance[j]);
+                }
+            }
+        }
+                                                                            //using shoelace formula we determine the area of a polygon
+        int j = p-1;
+        double area = 0.0;
+        double a;
+        for (int i = 0; i < p; i++)                                         //using shoelace formula we determine the area of a polygon
+        {
+            a = (polygon[j].x + polygon[i].x)*(polygon[j].y - polygon[i].y);
+            area= area+a;
+            j = i;
+        }
+        area=area/2.0;
+        int BoundaryPoints=0;
+        int q=p-1;                                                          //variable so we can count the boundary points between (xp, yp) and (x1,y1)
+        for (int i=0; i<p; i++)
+        {                                                                   //we have to count how many points lie on the line between (x1,y1) to (x2, y2)
+            int a=polygon[q].x-polygon[i].x;                                //in order to do it we treat (x1,y1) as if it were (0,0) thus we determine (x2, y2) as (x2-x1,y2-y1)
+            int b=polygon[q].y-polygon[i].y;                                //a=x2-x1 and b=y2-y1
+            int c=0;                                                        //variable to operate loop
+            while(c==0)
+            {
+                if(a<0)                                                     //if a or b are less than zero we can myltiply them by -1 to make them positive
+                    a=(-1)*a;
+                if(b<0)
+                    b=(-1)*b;
+                if(b==0)                                                    //if b=0 boundrary lattice  points are equal to a
+                    b=a;
+                if(a==0)                                                    //if a=0 boundrary lattice points are equal to b
+                    a=b;
+                if(b>a)                                                     //otherwise we find GCD of (a, b) using Euclidean Algorithm
+                    b-=a;
+                else if(a>b)                                                
+                    a-=b;
+                if(a==b)
+                    c=1;
+            }
+            BoundaryPoints+=a;
+            q=i;
+        }                                                                          //Pick's theorem: area = InteriorPoints + BoundaryPoints/2 -1
+        int InteriorPoints=area-BoundaryPoints/2+1;                               //we convert the formula to be able to calculate interior lattice points
+        cout<<InteriorPoints<<endl;
+        n--;
+    }
+return 0;
+}
