@@ -18,7 +18,7 @@ string add(string a, string b)  	// column addition
     {
         int r, ca, cb;
         if (pa>=0)              //we calculate the values of the digits
-            ca= a[pa]-48;       //ASCII of 0 is 48, so to get an integer we have to substract 48
+            ca= a[pa]-48;       //ASCII of 0 is 48, so to get an integer we have to subtract 48
         else
             ca=0;
 
@@ -40,7 +40,7 @@ string add(string a, string b)  	// column addition
         result="1"+ result;
     return result;
 }
-string substract(string a, string b) //column substraction
+string subtract(string a, string b) //column subtraction
 {
     int pa= a.length()-1;            //we find the position of the last digit in the strings a and b
     int pb= b.length()-1;
@@ -81,9 +81,9 @@ string substract(string a, string b) //column substraction
     {
         A=1; B=0;
     }
-    if(A>B)                          //we substract the second number from the first one
+    if(A>B)                          //we subtract the second number from the first one
     {
-        while (pa >=0 || pb >=0)     //the loop to successively substract the digits of stringb b from string a
+        while (pa >=0 || pb >=0)     //the loop to successively subtract the digits of stringb b from string a
         {
             int r, ca, cb;
             if (pa>=0)               //we calculate the values of the digits
@@ -114,7 +114,7 @@ string substract(string a, string b) //column substraction
             pa--; pb--;              //we decrement the position of the last digit
         }
     }
-    else if(B>A)                     //if the number two is bigger than the number one we substract string a from string b
+    else if(B>A)                     //if the number two is bigger than the number one we subtract string a from string b
     {
         while (pa >=0 || pb >=0)     //we repeat the steps as in the previous case
         {
@@ -176,7 +176,7 @@ string multiply(string a, string b)  //column multiplication
     {
         for(int j=0;j<n2;++j)
         {
-            int ca=a[i]-48;                          //we calculate the values of the digits by substracting 48 to get the integer
+            int ca=a[i]-48;                          //we calculate the values of the digits by subtracting 48 to get the integer
             int cb=b[j]-48;
             r[i+j+1]+=(ca*cb);                       //we fill the array with the product of ca*cb
         }
@@ -189,7 +189,7 @@ string multiply(string a, string b)  //column multiplication
         result[i] =(r[i]%10)+48;
     }
     result[0]=r[0]+48;
-    if(result[0]=='0')                               //if there is a zero in the 0th index of the result string we substract the result without it
+    if(result[0]=='0')                               //if there is a zero in the 0th index of the result string we subtract the result without it
     {
         result=result.substr(1,result.length());
     }
@@ -197,22 +197,26 @@ string multiply(string a, string b)  //column multiplication
 }
 string divide(string a, string b)       //long division
 {
+    if(b[0]=='0')                        //the divisor can't be equal to 0
+    {
+        return "You can't divide by 0";
+    }
     int n1=a.length();                   //we find the length of both numbers
     int n2=b.length();
     string result="";                    //empty string that will be the result
     string s;                            //string that will be the substring of the dividend
     string h;                            //string that will be the difference between two strings
     int A, B;                            //variables to help to determine which number is greater (the number in string s or the number in string b)
-    int r=0;                             //variable to count how many times are we able to substract string b from string s
+    int r=0;                             //variable to count how many times are we able to subtract string b from string s
     int p=1;                             //variable to operate the loop
     if(n1==n2)                           //the case when the strings a and b are of equal length
     {
         while(p)                         //loop until p=0
         {
-            h=substract(a,b);
+            h=subtract(a,b);
             a=h;
             r++;
-            if(a.length()<b.length())    //we check which string a or b holds a greater number to know if we should continue substracting or stop
+            if(a.length()<b.length())    //we check which string a or b holds a greater number to know if we should continue subtracting or stop
             {
                 A=0;
                 B=1;
@@ -252,7 +256,7 @@ string divide(string a, string b)       //long division
                 p=0;
             }
         }
-        result=r+48;                                    //result is equal to r the number of how many times the loop was carried out (how many times we substracted string b from a
+        result=r+48;                                    //result is equal to r the number of how many times the loop was carried out (how many times we subtracted string b from a
     }
     else                                                //the case where string b is shorter than string a
     {
@@ -351,9 +355,9 @@ string divide(string a, string b)       //long division
                     p=0; r=0;
                     break;
                 }
-                if(A>=B)                                          //if string s is greater than string b we can substract
+                if(A>=B)                                          //if string s is greater than string b we can subtract
                 {
-                    h=substract(s,b);                             //we substract string b from s
+                    h=subtract(s,b);                             //we subtract string b from s
                     s=h;
                 }
                 r++;
@@ -399,7 +403,7 @@ int main()
         }
         if(s.find('-')!=string::npos)
         {
-        cout<<substract(a,b);
+        cout<<subtract(a,b);
         }
         if(s.find('*')!=string::npos)
         {
@@ -416,3 +420,4 @@ int main()
     }
     return 0;
 }
+
