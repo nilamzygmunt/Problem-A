@@ -4,42 +4,40 @@
 using namespace std;
 
 
-string add(string a, string b)  	// column addition
+string add(string numberOne, string numberTwo)
 {
-    int pa= a.length()-1;		//we find the position of the last digit in the strings a and b
-    int pb= b.length()-1;
+    int numberOneLength = numberOne.length();
+    int numberTwoLength = numberTwo.length();
 
-    string result="";           	//empty string that will be the result
+    if (numberOneLength > numberTwoLength) swap(numberOne, numberTwo); 
 
-    int c=0;                    	//'c' - carrying ,the digit that we will carry to the next column
+    reverse(numberOne.begin(), numberOne.end());
+    reverse(numberTwo.begin(), numberTwo.end());
 
+    int carry = 0; 
+    string result = "";
 
-    while (pa >=0 || pb >=0)     //the loop to successively add the digits of strings a and b
-    {
-        int r, ca, cb;
-        if (pa>=0)              //we calculate the values of the digits
-            ca= a[pa]-48;       //ASCII of 0 is 48, so to get an integer we have to subtract 48
-        else
-            ca=0;
+    for (int i=0; i<numberOneLength; i++) 
+    { 
+        int sum = (numberOne[i] - '0') + (numberTwo[i] - '0') + carry;
+        result.push_back(sum % 10 + '0'); 
+        carry = sum / 10; 
+    } 
+  
+    for (int i=numberOneLength; i<numberTwoLength; i++) 
+    { 
+        int sum = (numberTwo[i] -'0') + carry; 
+        result.push_back(sum % 10 + '0'); 
+        carry = sum / 10; 
+    } 
 
-        if(pb>=0)
-            cb= b[pb]-48;
-        else
-            cb=0;
-
-        r= ca+cb+c;             //we calculate the sum of the digits remembering about the digit that we've carried from the last column
-
-        result="0"+result;      // to the result string we add the result from the previous loop
-        result[0]=48+r%10;      // we put the last digit of 'r' to the 0th index of the result
-
-        c=r/10;                 //we calculate what digit will have to be carried to the next column
-
-        pa--; pb--;             //we decrement the position of the last digit
-    }
-    if(c)                       //if c is 1 we add "1" at the beggining of the result
-        result="1"+ result;
-    return result;
+    if (carry) result.push_back(carry + '0'); 
+  
+    reverse(result.begin(), result.end()); 
+  
+    return result; 
 }
+
 string subtract(string a, string b) //column subtraction
 {
     int pa= a.length()-1;            //we find the position of the last digit in the strings a and b
