@@ -293,7 +293,6 @@ string divide(string a, string b)       //long division
             {
                 s = s + a.substr(0, 1);                              //we add the element of 0th index of string a to the string s
                 a = a.erase(0, 1);                                 //we erase this element from string a
-
                 n1--;                                        //because now there will be one less iteration
                 A = 1; B = 0;                                       //because now string as is greater than string b
             }
@@ -341,7 +340,7 @@ string divide(string a, string b)       //long division
                 {
                     result = result + "0";
                     result[t] = r + 48;                               //the result is equal to the number of how many times the loop was carried out
-                    p = 0; r = 0;
+                    p = 0;
                     break;
                 }
                 if (A >= B)                                          //if string s is greater than string b we can subtract
@@ -353,6 +352,10 @@ string divide(string a, string b)       //long division
             }
             r = 0;                                                    //r becomes 0 because the next iteration will begin
             s = s + a.substr(0, 1);                                      //we add the element of 0th index of string a to the string s
+            if (s[0] == '0')
+            {
+                s = s.substr(1, s.length());                 //if there is a zero in the 0th index of the result string we subtract the result without it
+            }
             a = a.erase(0, 1);                                         //we erase this element from string a
         }
     }
@@ -409,5 +412,3 @@ int main()
     }
     return 0;
 }
-
-
