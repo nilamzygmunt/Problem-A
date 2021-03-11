@@ -9,7 +9,7 @@ public class Main
         s[0] = new Student(1234, "Kowalski", "Jan", 5);
         s[1] = new Student(1235, "Kowalska", "Ala", 4);
         s[2] = new Student(1236, "Nowak", "Adam", 2);
-        s[3] = new Student(1237, "Smith", "John",3 );
+        s[3] = new Student(1237, "Kowalski", "John",3 );
         s[4] = new Student(1238, "Nowak", "Anna", 4);
 
         Student stud = new Student();
